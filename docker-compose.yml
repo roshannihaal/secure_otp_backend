@@ -12,3 +12,10 @@ services:
       - PORT=${PORT}
     ports:
       - ${PORT}:${PORT}
+  redis:
+    container_name: secure_otp-redis
+    restart: always
+    ports:
+      - ${REDIS_EXPOSE_PORT}:6379
+    volumes:
+      - /DATA/REDIS_DATA:/data
