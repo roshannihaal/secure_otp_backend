@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  api:
+    networks:
+      - secure_otp-network
+    build:
+      target: development
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+networks:
+  secure_otp-network:
+    name: secure_otp-network
+    driver: bridge
