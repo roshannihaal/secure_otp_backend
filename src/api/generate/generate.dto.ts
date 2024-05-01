@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { constants } from '../../utils';
 
 export const GenerateOtpDTO = z.object({
-  type: z.enum(['email'], {
+  type: z.enum([constants.EMAIL, constants.AUTHENTICATOR], {
     required_error: 'type is requireed',
     invalid_type_error: 'type must be a string',
   }),

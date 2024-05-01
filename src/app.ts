@@ -25,7 +25,7 @@ try {
   process.exit(1);
 }
 
-app.use(apiRouter);
+app.use('/api', apiRouter);
 app.use(notFound);
 app.use(errorHandler);
 
