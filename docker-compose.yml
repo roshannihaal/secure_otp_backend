@@ -10,8 +10,14 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=${PORT}
+      - REDIS_PORT=${REDIS_EXPOSE_PORT}
+      - REDIS_HOST=${REDIS_HOST}
     ports:
       - ${PORT}:${PORT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
   redis:
     container_name: secure_otp-redis
     restart: always
