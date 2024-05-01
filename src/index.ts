@@ -1,5 +1,9 @@
 import app from './app';
+import { config } from './config';
 
-app.listen(3000, () => {
-  console.log('App listening on port 3000');
+const port = config.PORT;
+const node_env = config.NODE_ENV;
+
+app.listen(port, () => {
+  console.log(`${node_env} app listening on port ${port}`);
 });

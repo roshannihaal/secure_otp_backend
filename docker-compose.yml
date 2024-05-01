@@ -7,5 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - NODE_ENV=development
+      - PORT=${PORT}
     ports:
       - ${PORT}:${PORT}
