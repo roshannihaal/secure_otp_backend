@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { GenerateOtpDTO } from './generate.dto';
 import { addTransaction, constants } from '../../utils';
 import { generateService } from './generate.service';
-import { addAuthenticatorTransactionDTO } from '../../utils/utils.dto';
+import { AddAuthenticatorTransactionDTO } from '../../utils/utils.dto';
 export const generateOtp = async (
   req: Request<unknown, unknown, GenerateOtpDTO>,
   res: Response,
@@ -13,7 +13,10 @@ export const generateOtp = async (
     if (body.type === constants.AUTHENTICATOR) {
       const transactionId = generateService.generateTransactionId();
       const secret = generateService.generateSecret();
-      const value = addAuthenticatorTransactionDTO.parse(secret);
+      const value = AddAuthenticatorTransactionDTO.parse({
+        type: constants.AUTHENTICATOR,
+        ...secret,
+      });
       await addTransaction(transactionId, value);
       const qrcode = await generateService.generateQRCode(value.otpauth_url);
       const resStatusCode = 200;

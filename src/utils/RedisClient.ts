@@ -1,6 +1,6 @@
 import { createClient, RedisClientType } from 'redis';
 import { config } from '../config';
-import { addAuthenticatorTransactionDTO } from './utils.dto';
+import { AddAuthenticatorTransactionDTO } from './utils.dto';
 
 const redisPort = config.REDIS_PORT;
 const redisHost = config.REDIS_HOST;
@@ -20,7 +20,7 @@ export const connectToRedis = async (): Promise<void> => {
 
 export const addTransaction = async (
   key: string,
-  value: addAuthenticatorTransactionDTO,
+  value: AddAuthenticatorTransactionDTO,
 ): Promise<void> => {
   try {
     client.json.set(key, '$', value);

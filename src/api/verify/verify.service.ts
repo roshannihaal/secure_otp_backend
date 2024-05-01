@@ -14,7 +14,7 @@ class VerifyImpl extends Verify {
     try {
       const transactionDetails = await readTransaction(transactionId);
 
-      if (!transactionDetails) {
+      if (!transactionDetails || transactionDetails.type !== type) {
         const response: VerifyOtpResponseDTO = {
           message: 'Invalid transactionId',
           verified: false,
