@@ -11,6 +11,7 @@ export const GenerateOtpDTO = z.object({
       required_error: 'id is requireed',
       invalid_type_error: 'id must be a string',
     })
-    .trim(),
+    .trim()
+    .optional(),
 });
 export type GenerateOtpDTO = z.input<typeof GenerateOtpDTO>;

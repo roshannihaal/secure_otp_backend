@@ -12,7 +12,7 @@ export const generateOtp = async (
   try {
     if (body.type === constants.AUTHENTICATOR) {
       const transactionId = generateService.generateTransactionId();
-      const secret = generateService.generateSecret(body.id);
+      const secret = generateService.generateSecret();
       const value = addAuthenticatorTransactionDTO.parse(secret);
       await addTransaction(transactionId, value);
       const qrcode = await generateService.generateQRCode(value.otpauth_url);
