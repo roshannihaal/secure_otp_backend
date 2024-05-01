@@ -12,6 +12,7 @@ services:
       - PORT=${PORT}
       - REDIS_PORT=${REDIS_EXPOSE_PORT}
       - REDIS_HOST=${REDIS_HOST}
+      - APP_NAME=${APP_NAME}
     ports:
       - ${PORT}:${PORT}
     extra_hosts:
@@ -24,4 +25,4 @@ services:
     ports:
       - ${REDIS_EXPOSE_PORT}:6379
     volumes:
-      - /DATA/REDIS_DATA:/data
+      - ./DATA/REDIS_DATA:/data

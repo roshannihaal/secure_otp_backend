@@ -1,10 +1,11 @@
 import { createClient, RedisClientType } from 'redis';
 import { config } from '../config';
+import { AddAuthenticatorTransactionDTO } from './utils.dto';
 
-const redis_port = config.REDIS_PORT;
-const redis_host = config.REDIS_HOST;
+const redisPort = config.REDIS_PORT;
+const redisHost = config.REDIS_HOST;
 
-const client: RedisClientType = createClient({ url: `redis://${redis_host}:${redis_port}` });
+const client: RedisClientType = createClient({ url: `redis://${redisHost}:${redisPort}` });
 
 export const connectToRedis = async (): Promise<void> => {
   try {
@@ -12,6 +13,26 @@ export const connectToRedis = async (): Promise<void> => {
 
     await client.set('key', 'value');
     console.log('Conntected to redis');
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addTransaction = async (
+  key: string,
+  value: AddAuthenticatorTransactionDTO,
+): Promise<void> => {
+  try {
+    client.json.set(key, '$', value);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const readTransaction = async (key: string): Promise<any> => {
+  try {
+    const result = await client.json.get(key);
+    return result;
   } catch (error) {
     throw error;
   }
