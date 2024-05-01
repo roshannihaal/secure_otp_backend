@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    networks:
+      - secure_otp-network
+    build:
+      target: development
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+  redis:
+    image: redis/redis-stack:7.2.0-v10
+    networks:
+      - secure_otp-network
+    ports:
+      - ${REDIS_INSIGHT_EXPOSE_PORT}:8001
+
+networks:
+  secure_otp-network:
+    name: secure_otp-network
+    driver: bridge

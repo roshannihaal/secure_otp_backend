@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: secure_otp-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - PORT=${PORT}
+      - REDIS_PORT=${REDIS_EXPOSE_PORT}
+      - REDIS_HOST=${REDIS_HOST}
+      - APP_NAME=${APP_NAME}
+    ports:
+      - ${PORT}:${PORT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
+  redis:
+    container_name: secure_otp-redis
+    restart: always
+    ports:
+      - ${REDIS_EXPOSE_PORT}:6379
+    volumes:
+      - ./DATA/REDIS_DATA:/data
