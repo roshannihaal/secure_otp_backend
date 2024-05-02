@@ -24,6 +24,20 @@ export const verifyOTP = async (
       res
         .status(resStatusCode)
         .send({ message: verifyResult.message, data: { verified: verifyResult.verified } });
+    } else if (body.type === constants.EMAIL) {
+      const verifyResult = await verifyService.verifyOTP(
+        constants.EMAIL,
+        body.transactionId,
+        body.otp,
+      );
+      if (!verifyResult.verified) {
+        res.status(verifyResult.statusCode);
+        throw new Error(verifyResult.message);
+      }
+      const resStatusCode = 200;
+      res
+        .status(resStatusCode)
+        .send({ message: verifyResult.message, data: { verified: verifyResult.verified } });
     }
   } catch (error) {
     next(error);
