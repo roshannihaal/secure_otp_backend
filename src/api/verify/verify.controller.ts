@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { VerifyOtpDTO } from './verify.dto';
-import { constants } from '../../utils';
+import { errors } from '../../utils';
 import { verifyService } from './verify.service';
 
 export const verifyOTP = async (
@@ -10,35 +10,14 @@ export const verifyOTP = async (
 ) => {
   const { body } = req;
   try {
-    if (body.type === constants.AUTHENTICATOR) {
-      const verifyResult = await verifyService.verifyOTP(
-        constants.AUTHENTICATOR,
-        body.transactionId,
-        body.otp,
-      );
-      if (!verifyResult.verified) {
-        res.status(verifyResult.statusCode);
-        throw new Error(verifyResult.message);
-      }
-      const resStatusCode = 200;
-      res
-        .status(resStatusCode)
-        .send({ message: verifyResult.message, data: { verified: verifyResult.verified } });
-    } else if (body.type === constants.EMAIL) {
-      const verifyResult = await verifyService.verifyOTP(
-        constants.EMAIL,
-        body.transactionId,
-        body.otp,
-      );
-      if (!verifyResult.verified) {
-        res.status(verifyResult.statusCode);
-        throw new Error(verifyResult.message);
-      }
-      const resStatusCode = 200;
-      res
-        .status(resStatusCode)
-        .send({ message: verifyResult.message, data: { verified: verifyResult.verified } });
+    const verified = await verifyService.verify(body.type, body.transactionId, body.otp);
+    if (!verified) {
+      throw new Error(errors.INVALID_OTP);
     }
+    const resStatusCode = 200;
+    res
+      .status(resStatusCode)
+      .send({ message: 'OTP Verified', data: { transactionId: body.transactionId } });
   } catch (error) {
     next(error);
   }
