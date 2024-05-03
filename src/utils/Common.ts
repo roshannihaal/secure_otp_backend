@@ -13,3 +13,8 @@ export const generateSecret = (transactionId: string): GeneratedSecret => {
   const secret: GeneratedSecret = speakeasy.generateSecret({ name });
   return secret;
 };
+
+export const secondsToMinutes = (seconds: number): number => {
+  const minutes = Math.floor(seconds / 60);
+  return minutes;
+};
