@@ -1,42 +1,42 @@
 import { z } from 'zod';
 import { constants } from '../../utils';
 
-export const GenerateOtpDTO = z.object({
+export const ResendOtpDTO = z.object({
   type: z.enum([constants.EMAIL, constants.AUTHENTICATOR], {
     required_error: 'type is requireed',
     invalid_type_error: 'type must be a string',
   }),
-  id: z
+  transactionId: z
     .string({
       required_error: 'id is requireed',
       invalid_type_error: 'id must be a string',
     })
-    .trim()
-    .optional(),
+    .trim(),
 });
-export type GenerateOtpDTO = z.input<typeof GenerateOtpDTO>;
+
+export type ResendOtpDTO = z.input<typeof ResendOtpDTO>;
 
 const DataDTO = z.object({
   transactionId: z.string(),
 });
 type DataDTO = z.input<typeof DataDTO>;
 
-export const GenerateOtpResponseDTO = z.object({
+export const ResendOtpResponseDTO = z.object({
   message: z.string(),
   data: DataDTO.extend({}),
 });
-export type GenerateOtpResponseDTO = z.input<typeof GenerateOtpResponseDTO>;
+export type ResendOtpResponseDTO = z.input<typeof ResendOtpResponseDTO>;
 
-export const GenerateAuthenticatorResponseDTO = GenerateOtpResponseDTO.extend({
+export const ResendAuthenticatorResponseDTO = ResendOtpResponseDTO.extend({
   data: DataDTO.extend({
     qrcode: z.string(),
   }),
 });
-export type GenerateAuthenticatorResponseDTO = z.input<typeof GenerateAuthenticatorResponseDTO>;
+export type ResendAuthenticatorResponseDTO = z.input<typeof ResendAuthenticatorResponseDTO>;
 
-export const GenerateEmailResponseDTO = GenerateOtpResponseDTO.extend({
+export const ResendEmailResponseDTO = ResendOtpResponseDTO.extend({
   data: DataDTO.extend({
     otp: z.string(),
   }),
 });
-export type GenerateEmailResponseDTO = z.input<typeof GenerateEmailResponseDTO>;
+export type ResendEmailResponseDTO = z.input<typeof ResendEmailResponseDTO>;
