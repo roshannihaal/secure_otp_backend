@@ -14,5 +14,6 @@ export type AddAuthenticatorTransactionDTO = z.input<typeof AddAuthenticatorTran
 export const AddEmailTransactionDTO = AddTransactionDTO.extend({
   base32: z.string(),
   counter: z.number(),
+  id: z.string(),
 });
 export type AddEmailTransactionDTO = z.input<typeof AddEmailTransactionDTO>;

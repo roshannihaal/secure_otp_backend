@@ -13,3 +13,23 @@ export const generateSecret = (transactionId: string): GeneratedSecret => {
   const secret: GeneratedSecret = speakeasy.generateSecret({ name });
   return secret;
 };
+
+export const secondsToMinutes = (seconds: number): number => {
+  const minutes = Math.floor(seconds / 60);
+  return minutes;
+};
+
+export const maskEmail = (email: string): string => {
+  const [local, domain] = email.split('@');
+  // Masking Domain
+  const [service, tld] = domain.split('.');
+  const maskedDomain = `${''.padStart(service.length, '*')}.${tld}`;
+
+  // Masking Local
+  const unmaskedLocalLength = Math.ceil(local.length / 2);
+  const maskedLocal = `${local.charAt(0)}${local
+    .slice(unmaskedLocalLength)
+    .padStart(local.length - 1, '*')}`;
+  const maskedEmail = `${maskedLocal}@${maskedDomain}`;
+  return maskedEmail;
+};

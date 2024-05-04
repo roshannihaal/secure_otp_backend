@@ -7,9 +7,15 @@ import {
   generateQRCode,
   generateSecret,
   AddAuthenticatorTransactionDTO,
+  sendEmail,
+  maskEmail,
 } from '../../utils';
 import speakeasy, { GeneratedSecret } from 'speakeasy';
-import { ResendAuthenticatorResponseDTO, ResendEmailResponseDTO } from './resend.dto';
+import {
+  ResendAuthenticatorResponseDTO,
+  ResendEmailResponseDTO,
+  ResendHotpResponse,
+} from './resend.dto';
 
 abstract class Resend {
   abstract resend(
@@ -31,17 +37,19 @@ class ResendImpl extends Resend {
       };
       return data;
     } else if (type === constants.EMAIL) {
-      const otp = await this.resendHotp(transactionId);
+      const { otp, id } = await this.resendHotp(transactionId);
+      await sendEmail(id, otp);
+      const maskedEmail = maskEmail(id);
       const data: ResendEmailResponseDTO = {
-        message: 'New OTP Generated',
-        data: { otp, transactionId },
+        message: `OTP Sent to ${maskedEmail}`,
+        data: { transactionId },
       };
       return data;
     }
     throw new Error(errors.INVALID_TYPE);
   }
 
-  private async resendHotp(transactionId: string): Promise<string> {
+  private async resendHotp(transactionId: string): Promise<ResendHotpResponse> {
     const res = await readTransaction(transactionId);
     if (!res || res.type !== constants.EMAIL) {
       throw new Error(errors.INVALID_TRANSACTION_ID);
@@ -54,7 +62,11 @@ class ResendImpl extends Resend {
       counter: data.counter,
     });
     await addTransaction(transactionId, data);
-    return otp;
+    const response: ResendHotpResponse = {
+      otp,
+      id: data.id,
+    };
+    return response;
   }
 
   private async resendTotp(transactionId: string): Promise<string> {

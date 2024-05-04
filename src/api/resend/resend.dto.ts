@@ -21,6 +21,12 @@ const DataDTO = z.object({
 });
 type DataDTO = z.input<typeof DataDTO>;
 
+export const ResendHotpResponse = z.object({
+  otp: z.string(),
+  id: z.string(),
+});
+export type ResendHotpResponse = z.input<typeof ResendHotpResponse>;
+
 export const ResendOtpResponseDTO = z.object({
   message: z.string(),
   data: DataDTO.extend({}),
@@ -34,9 +40,5 @@ export const ResendAuthenticatorResponseDTO = ResendOtpResponseDTO.extend({
 });
 export type ResendAuthenticatorResponseDTO = z.input<typeof ResendAuthenticatorResponseDTO>;
 
-export const ResendEmailResponseDTO = ResendOtpResponseDTO.extend({
-  data: DataDTO.extend({
-    otp: z.string(),
-  }),
-});
+export const ResendEmailResponseDTO = ResendOtpResponseDTO;
 export type ResendEmailResponseDTO = z.input<typeof ResendEmailResponseDTO>;
