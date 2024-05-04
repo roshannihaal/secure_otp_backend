@@ -8,26 +8,31 @@ import {
   addTransaction,
   AddAuthenticatorTransactionDTO,
   generateQRCode,
+  sendEmail,
+  maskEmail,
 } from '../../utils';
 import { GenerateAuthenticatorResponseDTO, GenerateEmailResponseDTO } from './generate.dto';
 abstract class Generate {
   abstract generate(
     type: string,
+    id: string | undefined,
   ): Promise<GenerateAuthenticatorResponseDTO | GenerateEmailResponseDTO>;
 }
 
 class GenerateImpl extends Generate {
   async generate(
     type: string,
+    id: string | undefined,
   ): Promise<GenerateAuthenticatorResponseDTO | GenerateEmailResponseDTO> {
     const transactionId = this.generateTransactionId();
     const secret: GeneratedSecret = generateSecret(transactionId);
-    if (type === constants.EMAIL) {
+    if (type === constants.EMAIL && id) {
       const otp = await this.generateHotp(transactionId, secret);
+      const maskedEmail = maskEmail(id);
+      await sendEmail(id, otp);
       const response: GenerateEmailResponseDTO = {
-        message: 'New OTP Generated',
+        message: `OTP Sent to ${maskedEmail}`,
         data: {
-          otp,
           transactionId,
         },
       };

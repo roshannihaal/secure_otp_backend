@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to: string, otp: string) => {
+export const sendEmail = async (to: string, otp: string): Promise<void> => {
   try {
     const html = readAndAttachVariables(otp);
     await shipMail(to, html);

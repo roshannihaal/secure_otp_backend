@@ -34,9 +34,5 @@ export const GenerateAuthenticatorResponseDTO = GenerateOtpResponseDTO.extend({
 });
 export type GenerateAuthenticatorResponseDTO = z.input<typeof GenerateAuthenticatorResponseDTO>;
 
-export const GenerateEmailResponseDTO = GenerateOtpResponseDTO.extend({
-  data: DataDTO.extend({
-    otp: z.string(),
-  }),
-});
+export const GenerateEmailResponseDTO = GenerateOtpResponseDTO;
 export type GenerateEmailResponseDTO = z.input<typeof GenerateEmailResponseDTO>;
