@@ -23,8 +23,6 @@ services:
       - EMAIL_AUTH_USER=${EMAIL_AUTH_USER}
       - EMAIL_AUTH_PASSWORD=${EMAIL_AUTH_PASSWORD}
       - OTP_MAX_ATTEMPTS=${OTP_MAX_ATTEMPTS}
-      
-
     ports:
       - ${PORT}:${PORT}
     extra_hosts:
