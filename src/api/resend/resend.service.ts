@@ -9,6 +9,7 @@ import {
   AddAuthenticatorTransactionDTO,
   sendEmail,
   maskEmail,
+  incrementTransactionFields,
 } from '../../utils';
 import speakeasy, { GeneratedSecret } from 'speakeasy';
 import {
@@ -16,6 +17,7 @@ import {
   ResendEmailResponseDTO,
   ResendHotpResponse,
 } from './resend.dto';
+import { config } from '../../config';
 
 abstract class Resend {
   abstract resend(
@@ -25,6 +27,8 @@ abstract class Resend {
 }
 
 class ResendImpl extends Resend {
+  otpCounterIncrement = config.OTP_COUNTER_INCREMENT;
+
   async resend(
     type: string,
     transactionId: string,
@@ -55,13 +59,13 @@ class ResendImpl extends Resend {
       throw new Error(errors.INVALID_TRANSACTION_ID);
     }
     const data = AddEmailTransactionDTO.parse(res);
-    data.counter += 1;
+    data.counter += this.otpCounterIncrement;
     const otp = speakeasy.hotp({
       secret: data.base32,
       encoding: 'base32',
       counter: data.counter,
     });
-    await addTransaction(transactionId, data);
+    await incrementTransactionFields(transactionId, 'counter', this.otpCounterIncrement);
     const response: ResendHotpResponse = {
       otp,
       id: data.id,

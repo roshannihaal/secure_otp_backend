@@ -1,8 +1,10 @@
 import {
   AddAuthenticatorTransactionDTO,
   AddEmailTransactionDTO,
+  addTransaction,
   constants,
   errors,
+  incrementTransactionFields,
   readTransaction,
 } from '../../utils';
 import speakeasy from 'speakeasy';
@@ -43,6 +45,13 @@ class VerifyImpl extends Verify {
     if (!res || res.type !== constants.EMAIL) {
       throw new Error(errors.INVALID_TRANSACTION_ID);
     }
+    if (res.verified === true) {
+      throw new Error(errors.TRANSACTION_ALREADY_PROCESSED);
+    }
+    if (!res.limit) {
+      throw new Error(errors.MAXIMUM_LIMIT_EXCEEDED);
+    }
+
     const data = AddEmailTransactionDTO.parse(res);
     const verified = speakeasy.hotp.verify({
       secret: data.base32,
@@ -50,6 +59,12 @@ class VerifyImpl extends Verify {
       token: otp,
       counter: data.counter,
     });
+    if (verified) {
+      data.verified = true;
+      await addTransaction(transactionId, data);
+    } else {
+      await incrementTransactionFields(transactionId, 'limit', -1);
+    }
     return verified;
   }
 }

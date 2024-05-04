@@ -15,5 +15,10 @@ export const AddEmailTransactionDTO = AddTransactionDTO.extend({
   base32: z.string(),
   counter: z.number(),
   id: z.string(),
+  limit: z.number(),
+  verified: z.boolean(),
 });
 export type AddEmailTransactionDTO = z.input<typeof AddEmailTransactionDTO>;
+
+export const IncrementFields = z.enum(['counter', 'limit']);
+export type IncrementFields = z.input<typeof IncrementFields>;
