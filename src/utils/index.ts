@@ -2,7 +2,7 @@ export {
   connectToRedis,
   addTransaction,
   readTransaction,
-  incrementTransactionCounter,
+  incrementTransactionFields,
 } from './RedisClient';
 export { constants } from './Constants';
 export { AddAuthenticatorTransactionDTO, AddEmailTransactionDTO } from './utils.dto';

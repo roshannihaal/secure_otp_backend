@@ -24,7 +24,9 @@ export const errorHandler = (error: Error, req: Request, res: Response, next: Ne
   if (
     error.message === errors.INVALID_OTP ||
     error.message === errors.INVALID_TRANSACTION_ID ||
-    error.message === errors.INVALID_TYPE
+    error.message === errors.INVALID_TYPE ||
+    error.message === errors.MAXIMUM_LIMIT_EXCEEDED ||
+    error.message === errors.TRANSACTION_ALREADY_PROCESSED
   ) {
     res.status(400);
   }

@@ -22,6 +22,7 @@ abstract class Generate {
 
 class GenerateImpl extends Generate {
   otpCounterInit = config.OTP_COUNTER_INIT;
+  otpMaxAttempts = config.OTP_MAX_ATTEMPTS;
 
   async generate(
     type: string,
@@ -63,6 +64,8 @@ class GenerateImpl extends Generate {
       type: constants.EMAIL,
       counter: this.otpCounterInit,
       id,
+      limit: this.otpMaxAttempts,
+      verified: false,
       ...secret,
     });
     await addTransaction(transactionId, data);

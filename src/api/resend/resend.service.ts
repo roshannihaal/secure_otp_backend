@@ -9,7 +9,7 @@ import {
   AddAuthenticatorTransactionDTO,
   sendEmail,
   maskEmail,
-  incrementTransactionCounter,
+  incrementTransactionFields,
 } from '../../utils';
 import speakeasy, { GeneratedSecret } from 'speakeasy';
 import {
@@ -65,7 +65,7 @@ class ResendImpl extends Resend {
       encoding: 'base32',
       counter: data.counter,
     });
-    await incrementTransactionCounter(transactionId);
+    await incrementTransactionFields(transactionId, 'counter', this.otpCounterIncrement);
     const response: ResendHotpResponse = {
       otp,
       id: data.id,

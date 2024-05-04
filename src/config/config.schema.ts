@@ -18,6 +18,10 @@ export const ConfigSchema = z.object({
     .string()
     .trim()
     .transform((value) => parseInt(value)),
+  OTP_MAX_ATTEMPTS: z
+    .string()
+    .trim()
+    .transform((value) => parseInt(value)),
   EMAIL_HOST: z.string().trim(),
   EMAIL_SERVICE: z.string().trim(),
   EMAIL_PORT: z
