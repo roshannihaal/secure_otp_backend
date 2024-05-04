@@ -5,6 +5,7 @@ import { AddAuthenticatorTransactionDTO, AddEmailTransactionDTO } from './utils.
 const redisPort = config.REDIS_PORT;
 const redisHost = config.REDIS_HOST;
 const otpExpTime = config.OTP_EXP_TIME;
+const otpCounterIncrement = config.OTP_COUNTER_INCREMENT;
 
 const client: RedisClientType = createClient({ url: `redis://${redisHost}:${redisPort}` });
 
@@ -43,7 +44,7 @@ export const readTransaction = async (key: string): Promise<any> => {
 
 export const incrementTransactionCounter = async (key: string): Promise<void> => {
   try {
-    await client.json.numIncrBy(key, 'counter', 1);
+    await client.json.numIncrBy(key, 'counter', otpCounterIncrement);
   } catch (error) {
     throw error;
   }

@@ -17,6 +17,7 @@ import {
   ResendEmailResponseDTO,
   ResendHotpResponse,
 } from './resend.dto';
+import { config } from '../../config';
 
 abstract class Resend {
   abstract resend(
@@ -26,6 +27,8 @@ abstract class Resend {
 }
 
 class ResendImpl extends Resend {
+  otpCounterIncrement = config.OTP_COUNTER_INCREMENT;
+
   async resend(
     type: string,
     transactionId: string,
@@ -56,7 +59,7 @@ class ResendImpl extends Resend {
       throw new Error(errors.INVALID_TRANSACTION_ID);
     }
     const data = AddEmailTransactionDTO.parse(res);
-    data.counter += 1;
+    data.counter += this.otpCounterIncrement;
     const otp = speakeasy.hotp({
       secret: data.base32,
       encoding: 'base32',
