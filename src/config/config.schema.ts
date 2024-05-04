@@ -10,6 +10,10 @@ export const ConfigSchema = z.object({
     .string()
     .trim()
     .transform((value) => parseInt(value)),
+  OTP_COUNTER_INIT: z
+    .string()
+    .trim()
+    .transform((value) => parseInt(value)),
   OTP_COUNTER_INCREMENT: z
     .string()
     .trim()

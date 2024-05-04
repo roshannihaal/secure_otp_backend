@@ -12,6 +12,7 @@ import {
   maskEmail,
 } from '../../utils';
 import { GenerateAuthenticatorResponseDTO, GenerateEmailResponseDTO } from './generate.dto';
+import { config } from '../../config';
 abstract class Generate {
   abstract generate(
     type: string,
@@ -20,6 +21,8 @@ abstract class Generate {
 }
 
 class GenerateImpl extends Generate {
+  otpCounterInit = config.OTP_COUNTER_INIT;
+
   async generate(
     type: string,
     id: string | undefined,
@@ -58,7 +61,7 @@ class GenerateImpl extends Generate {
   ): Promise<string> {
     const data = AddEmailTransactionDTO.parse({
       type: constants.EMAIL,
-      counter: constants.TOTP_COUNTER_INIT,
+      counter: this.otpCounterInit,
       id,
       ...secret,
     });
