@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api:
+    extends:
+      file: docker-compose.yml
+      service: api
+    networks:
+      - secure_otp-network
+    build:
+      target: production
+    environment:
+      - NODE_ENV=production
+  redis:
+    extends:
+        file: docker-compose.yml
+        service: redis
+    image: redis/redis-stack-server:7.2.0-v10
+    networks:
+      - secure_otp-network
+
+networks:
+  secure_otp-network:
+    name: secure_otp-network
+    driver: bridge
