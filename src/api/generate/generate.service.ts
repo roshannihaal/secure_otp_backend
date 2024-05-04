@@ -27,7 +27,7 @@ class GenerateImpl extends Generate {
     const transactionId = this.generateTransactionId();
     const secret: GeneratedSecret = generateSecret(transactionId);
     if (type === constants.EMAIL && id) {
-      const otp = await this.generateHotp(transactionId, secret);
+      const otp = await this.generateHotp(transactionId, secret, id);
       const maskedEmail = maskEmail(id);
       await sendEmail(id, otp);
       const response: GenerateEmailResponseDTO = {
@@ -51,10 +51,15 @@ class GenerateImpl extends Generate {
     throw new Error(errors.INVALID_TYPE);
   }
 
-  private async generateHotp(transactionId: string, secret: GeneratedSecret): Promise<string> {
+  private async generateHotp(
+    transactionId: string,
+    secret: GeneratedSecret,
+    id: string,
+  ): Promise<string> {
     const data = AddEmailTransactionDTO.parse({
       type: constants.EMAIL,
       counter: constants.TOTP_COUNTER_INIT,
+      id,
       ...secret,
     });
     await addTransaction(transactionId, data);
