@@ -1,9 +1,8 @@
 import nodemailer from 'nodemailer';
-import fs from 'fs';
 import { config } from '../config';
 import { secondsToMinutes } from './Common';
+import { template } from '../templates';
 
-const templatePath = './src/templates/index.html';
 const appName = config.APP_NAME;
 const otpExpTime = config.OTP_EXP_TIME;
 const EMAIL = {
@@ -37,7 +36,7 @@ export const sendEmail = async (to: string, otp: string): Promise<void> => {
 
 const readAndAttachVariables = (otp: string): string => {
   try {
-    let html = fs.readFileSync(templatePath, 'utf8');
+    let html = template;
     const otpExpMintues = secondsToMinutes(otpExpTime).toString();
     html = html.replace(/{{OTP}}/, otp);
     html = html.replace(/{{TIME}}/, otpExpMintues);

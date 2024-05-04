@@ -58,6 +58,12 @@ class ResendImpl extends Resend {
     if (!res || res.type !== constants.EMAIL) {
       throw new Error(errors.INVALID_TRANSACTION_ID);
     }
+    if (res.verified === true) {
+      throw new Error(errors.TRANSACTION_ALREADY_PROCESSED);
+    }
+    if (!res.limit) {
+      throw new Error(errors.MAXIMUM_LIMIT_EXCEEDED);
+    }
     const data = AddEmailTransactionDTO.parse(res);
     data.counter += this.otpCounterIncrement;
     const otp = speakeasy.hotp({
@@ -78,6 +84,7 @@ class ResendImpl extends Resend {
     if (!res || res.type !== constants.AUTHENTICATOR) {
       throw new Error(errors.INVALID_TRANSACTION_ID);
     }
+
     const secret: GeneratedSecret = generateSecret(transactionId);
     const data = AddAuthenticatorTransactionDTO.parse({ type: constants.AUTHENTICATOR, ...secret });
     await addTransaction(transactionId, data);
