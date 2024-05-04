@@ -19,7 +19,7 @@ export const connectToRedis = async (): Promise<void> => {
 
 export const addTransaction = async (
   key: string,
-  value: AddAuthenticatorTransactionDTO | AddEmailTransactionDTO | any,
+  value: AddAuthenticatorTransactionDTO | AddEmailTransactionDTO,
 ): Promise<void> => {
   try {
     const res = await readTransaction(key);
