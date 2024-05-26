@@ -38,7 +38,6 @@ export const errorHandler = (error: Error, req: Request, res: Response, next: Ne
   const statusCode = res.statusCode !== 200 ? res.statusCode : HTTP_SERVER_ERROR;
 
   const errorResponse = {
-    status_code: statusCode,
     message: error.message,
     name: error.name,
     stack: error.stack,

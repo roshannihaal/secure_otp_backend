@@ -15,7 +15,7 @@ app.use(hpp());
 
 app.get('/', (req, res) => {
   const resStatusCode = 200;
-  return res.status(resStatusCode).json({ statusCode: resStatusCode, message: 'Hello World!' });
+  return res.status(resStatusCode).json({ message: 'Hello World!' });
 });
 
 try {
