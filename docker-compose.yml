@@ -36,3 +36,5 @@ services:
       - ${REDIS_EXPOSE_PORT}:6379
     volumes:
       - ./DATA/REDIS_DATA:/data
+    environment:
+      - REDIS_ARGS=--appendonly yes
