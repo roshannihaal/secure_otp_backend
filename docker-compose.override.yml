@@ -14,7 +14,7 @@ services:
     networks:
       - secure_otp-network
     ports:
-      - ${REDIS_INSIGHT_EXPOSE_PORT}:8001
+      - ${REDIS_INSIGHT_EXPOSE_PORT:-8001}:8001
 
 networks:
   secure_otp-network:
