@@ -1,0 +1,14 @@
+.husky
+.vscode
+DATA
+node_modules
+.env.sample
+.eslint*
+.git*
+.nvmrc
+.prettier*
+docker-compose*
+Dockerfile
+Makefile
+package-lock.json
+README.md

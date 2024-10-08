@@ -6,11 +6,10 @@ import {
   IncrementFields,
 } from './utils.dto';
 
-const redisPort = config.REDIS_PORT;
 const redisHost = config.REDIS_HOST;
 const otpExpTime = config.OTP_EXP_TIME;
 
-const client: RedisClientType = createClient({ url: `redis://${redisHost}:${redisPort}` });
+const client: RedisClientType = createClient({ url: `redis://${redisHost}:6379` });
 
 export const connectToRedis = async (): Promise<void> => {
   try {
